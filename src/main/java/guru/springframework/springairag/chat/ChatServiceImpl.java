@@ -39,7 +39,7 @@ public class ChatServiceImpl
   @Override
   public Answer getAnswer( Question question ) {
 
-    List<Document> documents = vectorStore.similaritySearch( SearchRequest.query( question.question() ).withTopK( 4 ) );
+    List<Document> documents = vectorStore.similaritySearch( SearchRequest.query( question.question() ).withTopK( 6 ) );
     List<String> contentList = documents.stream().map( Document::getContent ).toList();
 
     PromptTemplate promptTemplate = new PromptTemplate( ragPromptTemplate );
