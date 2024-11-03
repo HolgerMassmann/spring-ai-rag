@@ -7,9 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ChatController {
 
+  private final ChatService chatService;
+
+  public ChatController( ChatService chatService ) {
+    this.chatService = chatService;
+  }
+
   @PostMapping("/ask")
   public Answer ask( @RequestBody Question question) {
     // Call OpenAI to get answer
-    return new Answer( "Hello World" );
+
+    Answer answer = chatService.getAnswer( question );
+    return answer;
   }
 }
