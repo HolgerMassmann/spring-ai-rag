@@ -7,7 +7,6 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
-import org.springframework.ai.vectorstore.observation.VectorStoreQueryResponseObservationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class ChatServiceImpl
 
   private final ChatModel chatModel;
   private final SimpleVectorStore vectorStore;
-  private final VectorStoreQueryResponseObservationFilter vectorStoreQueryResponseObservationFilter;
 
 
   @Value("classpath:/templates/rag-prompt-template.st")
@@ -33,11 +31,9 @@ public class ChatServiceImpl
    * @param chatModel   the {@code ChatModel} used to communicate with the OpenAI API
    * @param vectorStore the {@code SimpleVectorStore} to get the embeddings from
    */
-  public ChatServiceImpl( ChatModel chatModel, SimpleVectorStore vectorStore,
-                          VectorStoreQueryResponseObservationFilter vectorStoreQueryResponseObservationFilter ) {
+  public ChatServiceImpl( ChatModel chatModel, SimpleVectorStore vectorStore ) {
     this.chatModel = chatModel;
     this.vectorStore = vectorStore;
-    this.vectorStoreQueryResponseObservationFilter = vectorStoreQueryResponseObservationFilter;
   }
 
   @Override
