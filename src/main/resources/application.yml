@@ -7,3 +7,4 @@ spring:
 sfg:
   aiapp:
     vectorStorePath: /tmp/vectorstore.json
+    documents-to-load: movies500.csv
