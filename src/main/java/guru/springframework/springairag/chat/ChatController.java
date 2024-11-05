@@ -17,7 +17,6 @@ public class ChatController {
   public Answer ask( @RequestBody Question question) {
     // Call OpenAI to get answer
 
-    Answer answer = chatService.getAnswer( question );
-    return answer;
+    return chatService.getAnswer( question );
   }
 }
