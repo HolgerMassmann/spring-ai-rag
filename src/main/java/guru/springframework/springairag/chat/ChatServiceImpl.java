@@ -1,5 +1,7 @@
 package guru.springframework.springairag.chat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -18,11 +20,13 @@ import java.util.Map;
 public class ChatServiceImpl
         implements ChatService {
 
+  private static final Logger LOG = LoggerFactory.getLogger( ChatServiceImpl.class );
+
   private final ChatModel chatModel;
   private final SimpleVectorStore vectorStore;
 
 
-  @Value("classpath:/templates/rag-prompt-template.st")
+  @Value("classpath:/templates/rag-prompt-template-meta.st")
   private Resource ragPromptTemplate;
 
   /**
@@ -39,8 +43,11 @@ public class ChatServiceImpl
   @Override
   public Answer getAnswer( Question question ) {
 
-    List<Document> documents = vectorStore.similaritySearch( SearchRequest.query( question.question() ).withTopK( 6 ) );
+    List<Document> documents = vectorStore.similaritySearch( SearchRequest.query( question.question() ).withTopK( 4 ) );
     List<String> contentList = documents.stream().map( Document::getContent ).toList();
+
+    getLog().info( "List of contents:" );
+    contentList.forEach( content -> getLog().info( content.substring( 0, 140 ) ) );
 
     PromptTemplate promptTemplate = new PromptTemplate( ragPromptTemplate );
     Map<String, Object> bindingMap =
@@ -51,5 +58,9 @@ public class ChatServiceImpl
 
     return new Answer( response.getResult().getOutput().getContent() );
 
+  }
+
+  private Logger getLog() {
+    return LOG;
   }
 }
